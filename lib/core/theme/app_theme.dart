@@ -12,9 +12,15 @@ abstract class AppTheme {
         fontFamily: 'DMSans',
       ),
       bodyMedium: TextStyle(
-        color: AppColors.darkBlueColor,
+        color: AppColors.blackColor,
         fontSize: 25,
         fontWeight: FontWeight.bold,
+        fontFamily: 'DMSans',
+      ),
+      displaySmall: TextStyle(
+        color: AppColors.blackColor,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
         fontFamily: 'DMSans',
       ),
       displayMedium: TextStyle(
