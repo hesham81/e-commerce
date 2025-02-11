@@ -1,29 +1,29 @@
-import 'dart:developer';
-
+import 'package:e_commerce/core/extensions/extensions.dart';
 import 'package:e_commerce/core/services/services/bot_toast.dart';
-
-import '/core/constant/app_assets.dart';
-import '/core/route/route_names.dart';
-import '/core/utils/auth.dart';
-import '/core/widget/custom_text_button.dart';
+import 'package:e_commerce/core/utils/auth.dart';
+import 'package:e_commerce/core/widget/custom_elevated_button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import '/core/extensions/extensions.dart';
-import '/core/validations/validations.dart';
-import '/core/widget/custom_elevated_button.dart';
-import '/core/widget/custom_text_form_field.dart';
-import 'package:flutter/material.dart';
+import '../../core/constant/app_assets.dart';
+import '../../core/validations/validations.dart';
+import '../../core/widget/custom_text_form_field.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
   var emailController = TextEditingController();
+
   var passwordController = TextEditingController();
+
+  var confirmPasswordController = TextEditingController();
+  var nameController = TextEditingController();
+
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
             children: [
               Image.asset(AppAssets.logo),
               Text(
-                "Welcome Back",
+                "Create New Account ",
                 style: theme.textTheme.bodyMedium,
               ),
               0.03.horSpace(),
@@ -61,6 +61,18 @@ class _LoginState extends State<Login> {
                     ),
                     0.02.horSpace(),
                     Text(
+                      "Name",
+                      style: theme.textTheme.bodySmall,
+                    ),
+                    0.01.horSpace(),
+                    CustomTextFormField(
+                      hintText: "Name",
+                      controller: nameController,
+                      validator: (value) =>
+                          Validations.isNameValid(nameController.text),
+                    ),
+                    0.02.horSpace(),
+                    Text(
                       "Password",
                       style: theme.textTheme.bodySmall,
                     ),
@@ -73,35 +85,42 @@ class _LoginState extends State<Login> {
                         passwordController.text,
                       ),
                     ),
-                    CustomTextButton(
-                      text: "Forget Password",
+                    0.02.horSpace(),
+                    Text(
+                      "Confirm Password",
                       style: theme.textTheme.bodySmall,
-                      callback: () => Navigator.pushNamed(
-                        context,
-                        RouteNames.forget,
+                    ),
+                    0.01.horSpace(),
+                    CustomTextFormField(
+                      hintText: "Confirm Password",
+                      isPassword: true,
+                      controller: confirmPasswordController,
+                      validator: (value) => Validations.rePasswordValid(
+                        passwordController.text,
+                        confirmPasswordController.text,
                       ),
-                    ).right,
+                    ),
                     0.01.horSpace(),
                     CustomElevatedButton(
-                      text: "Login",
+                      text: "Create Account",
                       borderRadius: 10,
                       callBack: () async {
                         if (formKey.currentState!.validate()) {
                           EasyLoading.show();
-                          var response = await Authentication.login(
+                          var response = await Authentication.createAccount(
                             email: emailController.text,
                             password: passwordController.text,
+                            name: nameController.text,
                           ).then(
                             (_) {
                               EasyLoading.dismiss();
                             },
                           );
-                          log("Response ${response.toString()}");
-
                           if (response == null) {
                             BotToastServices.showSuccessMessage(
-                              "Login Success",
+                              "Account Created Succefully",
                             );
+                            Navigator.pop(context);
                           } else {
                             BotToastServices.showErrorMessage(
                               response.toString(),
@@ -110,25 +129,6 @@ class _LoginState extends State<Login> {
                         }
                       },
                     ),
-                    0.01.horSpace(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account?",
-                          style: theme.textTheme.displaySmall,
-                        ),
-                        0.01.verSpace(),
-                        CustomTextButton(
-                          text: "Sign Up",
-                          style: theme.textTheme.displayMedium,
-                          callback: () => Navigator.pushNamed(
-                            context,
-                            RouteNames.sign,
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ),
