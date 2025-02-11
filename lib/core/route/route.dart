@@ -1,3 +1,4 @@
+import '/modules/sign_up/sign_up.dart';
 import '/modules/auth/forget_password/forget_password.dart';
 import '/core/route/route_names.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,10 @@ abstract class Routes {
       case RouteNames.forget:
         return MaterialPageRoute(
           builder: (context) => const ForgetPassword(),
+        );
+      case RouteNames.sign:
+        return MaterialPageRoute(
+          builder: (context) => const SignUp(),
         );
 
       default:

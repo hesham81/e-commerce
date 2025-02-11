@@ -1,7 +1,9 @@
-import 'package:e_commerce/core/constant/app_assets.dart';
-import 'package:e_commerce/core/extensions/extensions.dart';
-import 'package:e_commerce/core/utils/auth.dart';
-import 'package:e_commerce/core/widget/custom_elevated_button.dart';
+import 'package:e_commerce/core/services/services/bot_toast.dart';
+
+import '/core/constant/app_assets.dart';
+import '/core/extensions/extensions.dart';
+import '/core/utils/auth.dart';
+import '/core/widget/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/validations/validations.dart';
@@ -66,10 +68,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     var response = await Authentication.forgetPassword(
                         email: emailController.text);
                     if (response == null) {
+                      BotToastServices.showSuccessMessage("Code Sent Successfully");
                       Navigator.pop(context);
                     }
                     else {
-                      print("error ");
+                      BotToastServices.showErrorMessage("Error While Sending Code ");
                     }
                   }
                 },
