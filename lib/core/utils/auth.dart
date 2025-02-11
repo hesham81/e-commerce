@@ -17,4 +17,16 @@ abstract class Authentication {
     }
     return null;
   }
+
+  static forgetPassword({
+    required String email,
+  }) async {
+    try {
+      await _supabase.resetPasswordForEmail(email);
+    } catch (error) {
+      log("Error ${error.toString()}");
+      return error.toString();
+    }
+    return null;
+  }
 }
