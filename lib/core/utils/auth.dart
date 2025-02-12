@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:e_commerce/core/utils/role_based.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class Authentication {
@@ -10,14 +11,20 @@ abstract class Authentication {
     required String password,
   }) async {
     try {
-      await _firebase.signInWithEmailAndPassword(
+      UserCredential? user = await _firebase.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      String role = await RoleBased.getUserRole(uid: user.user!.uid).then(
+        (rolee) => rolee.toString(),
+      );
+      print(role);
+      return role;
+    } on FirebaseAuthException catch (_) {
+      return null;
     } catch (error) {
-      return error.toString();
+      return null;
     }
-    return null;
   }
 
   static forgetPassword({
@@ -33,21 +40,22 @@ abstract class Authentication {
   static Future<String?> createAccount({
     required String email,
     required String password,
-    required String name ,
+    required String name,
   }) async {
-    try{
-      UserCredential user =  await _firebase.createUserWithEmailAndPassword(
+    try {
+      UserCredential user = await _firebase.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       user.user!.updateDisplayName(name);
       user.user!.reload();
-    }
-    catch(error)
-    {
+      var response = await RoleBased.createUser(
+        username: email,
+        token: user.user!.uid,
+      );
+      if (response != null) return null;
+    } catch (error) {
       return error.toString();
     }
-    return null ;
   }
-
 }
