@@ -1,7 +1,7 @@
-import 'package:e_commerce/core/extensions/extensions.dart';
-import 'package:e_commerce/core/services/services/bot_toast.dart';
-import 'package:e_commerce/core/utils/auth.dart';
-import 'package:e_commerce/core/widget/custom_elevated_button.dart';
+import '/core/extensions/extensions.dart';
+import '/core/services/services/bot_toast.dart';
+import '/core/utils/auth.dart';
+import '/core/widget/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -118,7 +118,7 @@ class _SignUpState extends State<SignUp> {
                           );
                           if (response == null) {
                             BotToastServices.showSuccessMessage(
-                              "Account Created Succefully",
+                              "Account Created Successfully",
                             );
                             Navigator.pop(context);
                           } else {

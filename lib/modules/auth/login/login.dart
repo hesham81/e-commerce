@@ -1,13 +1,10 @@
 import 'dart:developer';
-
 import 'package:e_commerce/core/services/services/bot_toast.dart';
-
 import '/core/constant/app_assets.dart';
 import '/core/route/route_names.dart';
 import '/core/utils/auth.dart';
 import '/core/widget/custom_text_button.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 import '/core/extensions/extensions.dart';
 import '/core/validations/validations.dart';
 import '/core/widget/custom_elevated_button.dart';
@@ -91,20 +88,21 @@ class _LoginState extends State<Login> {
                           var response = await Authentication.login(
                             email: emailController.text,
                             password: passwordController.text,
-                          ).then(
-                            (_) {
-                              EasyLoading.dismiss();
-                            },
                           );
+                          EasyLoading.dismiss();
                           log("Response ${response.toString()}");
 
                           if (response == null) {
-                            BotToastServices.showSuccessMessage(
-                              "Login Success",
-                            );
-                          } else {
                             BotToastServices.showErrorMessage(
-                              response.toString(),
+                              "Login Failed",
+                            );
+                          } else if (response == "user") {
+                            BotToastServices.showSuccessMessage(
+                              "User",
+                            );
+                          } else if (response == "admin") {
+                            BotToastServices.showSuccessMessage(
+                              "Admin",
                             );
                           }
                         }
